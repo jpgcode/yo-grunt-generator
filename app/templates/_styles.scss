@@ -1,0 +1,56 @@
+/*--
+Imports
+--*/
+@import "compass";
+@import "compass/reset";
+@import "compass/utilities/general/clearfix";
+
+/*--
+Variables
+--*/
+$center: 0 auto;
+$standardFontSize: 24px;
+$fontColor: #2C78AD;
+/*--
+Mixins
+--*/
+
+
+/*--
+Tags
+--*/
+body{
+	color: $fontColor;
+	background: #F3F1EA;
+	font: 14px/16px "Helvetica";
+}
+
+a{
+	text-decoration: none;
+}
+
+h1, h2{
+	font-size: $standardFontSize;
+	font-weight: bold;
+	line-height: 26px;
+}
+
+p{
+	margin-bottom: 10px;
+}
+
+strong{
+	font-weight: bold;
+}
+
+/*--
+Classes
+--*/
+.hide{
+	display: none;
+}
+
+
+/*--
+Layout
+--*/
