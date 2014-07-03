@@ -11,7 +11,10 @@ module.exports = function(grunt) {
         dist: 'dist'
     };
 
-    // Define the configuration for all the tasks
+    
+    /*--
+     Define the configuration for all the tasks
+    --*/
     grunt.initConfig({
 
         //Project settings
@@ -187,6 +190,7 @@ module.exports = function(grunt) {
         'useminPrepare',
         'concat',
         'cssmin',
+        'imagemin',
         'uglify',
         'copy:dist',
         'rev',
