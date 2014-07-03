@@ -128,8 +128,7 @@ module.exports = function(grunt) {
           },
           all: [
             'Gruntfile.js',
-            '<%%= config.app %>/js/{,*/}*.js',
-            '<%%= config.app %>!/js/vendor/*'
+            '<%= config.app %>/js/{,*/}*.js'
           ]
         },
 
@@ -141,15 +140,12 @@ module.exports = function(grunt) {
                 '<%%= config.dist %>/js/{,*/}*.js',
                 '<%%= config.dist %>/css/{,*/}*.css',
                 '<%%= config.dist %>/images/{,*/}*.*',
-                '<%%= config.dist %>/css/fonts/{,*/}*.*',
                 '<%%= config.dist %>/*.{ico,png}'
               ]
             }
           }
         },
         
-        
-
         copy: {
           dist: {
             files: [{
@@ -160,9 +156,7 @@ module.exports = function(grunt) {
               src: [
                 '*.{ico,png,txt}',
                 '.htaccess',
-                'images/{,*/}*.webp',
                 '{,*/}*.html',
-                'css/fonts/{,*/}*.*'
               ]
             }]
           },
@@ -179,8 +173,13 @@ module.exports = function(grunt) {
     });
 
  
-    //Define Grunt tasks
+    /*--
+     Define Grunt tasks
+    --*/
+
     grunt.registerTask('default', ['watch']);
+
+    grunt.registerTask('hint', ['jshint']);
 
     grunt.registerTask('build', [
         'clean:dist',
