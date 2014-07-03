@@ -57,6 +57,7 @@ var JpgcodeGenerator = yeoman.generators.Base.extend({
     this.copy('_styles.scss', 'app/sass/styles.scss');
     this.copy('styles.css', 'app/css/styles.css');
     this.copy('_scripts.js', 'app/js/scripts.js');
+    this.copy('_customMixins.scss', 'app/sass/_customMixins.scss');
     this.copy('_config.rb', 'config.rb');
     this.copy('_gruntfile.js', 'Gruntfile.js');
 

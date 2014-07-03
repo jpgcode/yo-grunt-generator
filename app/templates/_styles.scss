@@ -4,6 +4,7 @@ Imports
 @import "compass";
 @import "compass/reset";
 @import "compass/utilities/general/clearfix";
+@import "customMixins";
 
 /*--
 Variables
@@ -11,10 +12,6 @@ Variables
 $center: 0 auto;
 $standardFontSize: 24px;
 $fontColor: #2C78AD;
-/*--
-Mixins
---*/
-
 
 /*--
 Tags
@@ -22,7 +19,7 @@ Tags
 body{
 	color: $fontColor;
 	background: #FFF;
-	font: 14px/16px "Helvetica";
+	font: 14px/16px "Helvetica, Arial";
 }
 
 a{
