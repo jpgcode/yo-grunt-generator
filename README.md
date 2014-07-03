@@ -5,6 +5,20 @@
 
 ## Getting Started
 
+### Features
+
+JPGCode Generator allows you to easily create projects from scratch using the following technologies:
+
+- Yeoman
+- Grunt
+- Sass
+- Compass
+- Bower
+
+You will have a nice structure to start working very quickly using latest web standards.
+
+Enjoy!
+
 ### What is Yeoman?
 
 Trick question. It's not a thing. It's this guy:
