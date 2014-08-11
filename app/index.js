@@ -43,7 +43,7 @@ var JpgcodeGenerator = yeoman.generators.Base.extend({
     this.mkdir('app/sass');
     this.mkdir('app/js');
     this.mkdir('app/images');
-    this.mkdir('app/images-orig');
+    this.mkdir('app/fonts');
 
     this.copy('_package.json', 'package.json');
     this.copy('_bower.json', 'bower.json');

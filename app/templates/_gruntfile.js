@@ -8,7 +8,7 @@ module.exports = function(grunt) {
     // Configurable paths
     var config = {
         app: 'app',
-        dist: 'dist'
+        dist: 'build'
     };
 
     
@@ -28,54 +28,19 @@ module.exports = function(grunt) {
               }
             }
         },
- 
-        // Minify JS
-        uglify: {
-            options: {
-                banner: ''
-            },
-            target: {
-                // Source file
-                src: ['<%%= config.app %>/js/scripts.js'],
- 
-                // Minified new file
-                dest: '<%%= config.app %>/js/scripts.min.js'
- 
-            }
-        },
- 
-        // Optimize images
-        imagemin: {
-            dynamic: {
-                files: [{
-                    expand: true,
-                    cwd: '<%%= config.app %>/images-orig/',
-                    src: ['**/*.{png,jpg,gif}'],
-                    dest: '<%%= config.app %>/images/'
-                }]
-            }
-        },
- 
+
         // Watch files and trigger tasks
         watch: {
             sass: {
-                files: ['<%%= config.app %>/sass/**/*.scss'],
+                files: ['<%= config.app %>/sass/**/*.scss'],
                 tasks: ['compass'],
-            },
-            uglify: {
-                files: ['<%%= config.app %>/js/*.js'],
-                tasks: ['uglify']
-            },
-            imagemin:{
-                files: ['<%%= config.app %>/images-orig/*.{png,jpg,gif}'],
-                tasks: ['imagemin']
             },
             livereload: {
                 options: {
                     livereload: true
                 },
                 files: [
-                    '<%%= config.app %>/*.html', '<%%= config.app %>/css/*.css'
+                    '<%= config.app %>/*.html', '<%= config.app %>/css/*.css'
                 ]
             }
         },
@@ -87,40 +52,33 @@ module.exports = function(grunt) {
               dot: true,
               src: [
                 '.tmp',
-                '<%%= config.dist %>/*',
-                '!<%%= config.dist %>/.git*'
+                '<%= config.dist %>/*',
+                '!<%= config.dist %>/.git*'
+              ]
+            }]
+          },
+          postBuild: {
+            files: [{
+              dot: true,
+              src: [
+                '<%= config.dist %>/js/vendor',
+                '<%= config.dist %>/js/plugins.js',
               ]
             }]
           },
           server: '.tmp'
         },
 
-        // Automatically inject Bower components into the HTML file
-        wiredep: {
-          app: {
-            ignorePath: /^<%%= config.app %>\/|\.\.\//,
-            src: ['<%%= config.app %>/index.html']
-          },
-          sass: {
-            src: ['<%%= config.app %>/sass/{,*/}*.{scss,sass}'],
-            ignorePath: /(\.\.\/){1,2}bower_components\//
-          }
-        },
-
         useminPrepare: {
           options: {
-            dest: '<%%= config.dist %>'
+            dest: '<%= config.dist %>/index.html'
           },
-          html: '<%%= config.app %>/index.html'
+          html: '<%= config.dist %>/index.html'
         },
 
         // Performs rewrites based on rev and the useminPrepare configuration
         usemin: {
-          options: {
-            assetsDirs: ['<%%= config.dist %>', '<%%= config.dist %>/images']
-          },
-          html: ['<%%= config.dist %>/{,*/}*.html'],
-          css: ['<%%= config.dist %>/css/{,*/}*.css']
+          html: ['<%= config.dist %>/{,*/}*.html']
         },
 
         // Make sure code styles are up to par and there are no obvious mistakes
@@ -131,45 +89,141 @@ module.exports = function(grunt) {
           },
           all: [
             'Gruntfile.js',
-            '<%= config.app %>/js/{,*/}*.js'
+            '/js/{,*/}*.js'
           ]
         },
 
-        // Renames files for browser caching purposes
-        rev: {
+
+        /*-- 
+          Files to concat
+          This needs to be updated based on the project preferences
+        --*/
+        concat: {
+          options: {
+            separator: ';',
+          },
           dist: {
-            files: {
-              src: [
-                '<%%= config.dist %>/js/{,*/}*.js',
-                '<%%= config.dist %>/css/{,*/}*.css',
-                '<%%= config.dist %>/images/{,*/}*.*',
-                '<%%= config.dist %>/*.{ico,png}'
-              ]
-            }
-          }
+            src: [
+              //Example
+              '<%= config.dist %>/js/vendor/jquery.js', 
+              '<%= config.dist %>/js/vendor/jquery.flexslider.js',
+              '<%= config.dist %>/js/vendor/customForms.js',
+              '<%= config.dist %>/js/vendor/spritespin.js'
+            ],
+            dest: '<%= config.dist %>/js/plugins.js',
+          },
         },
+        /*--
+          End of concat method
+          Remove this when you update the files correctly
+        --*/
+
+
+        // Optimize images
+        imagemin: {
+            dynamic: {
+                files: [{
+                    expand: true,
+                    cwd: '<%= config.dist %>/images/',
+                    src: ['**/*.{png,jpg,gif}'],
+                    dest: '<%= config.dist %>/images/'
+                }]
+            }
+        },
+
+
+        /*--
+          Files that needs to be moved from bower_components folder
+          This needs to be updated based on the project preferences
+        --*/
+        bowercopy: {
+            options: {
+                srcPrefix: '<%= config.app %>/bower_components'
+            },
+            scripts: {
+                options: {
+                    destPrefix: '<%= config.dist %>/js/'
+                },
+                files: {
+                     //Example
+                     'vendor/jquery.js': 'jquery/jquery.js',
+                     'vendor/jquery.flexslider.js': 'flexslider/jquery.flexslider.js',
+                }
+            },
+            styles: {
+                options: {
+                    destPrefix: '<%= config.dist %>/css/'
+                },
+                files: {
+                    //Example
+                    'vendor/flexslider.css': 'flexslider/flexslider.css',
+                }
+            }
+        },
+        /*--
+          End of Bower copy method
+          Remove this when you update the files correctly
+        --*/
+
         
+        /*--
+          Files to copy on build, add here any file specific to your project
+          This needs to be updated based on the project preferences
+        --*/
         copy: {
           dist: {
-            files: [{
-              expand: true,
-              dot: true,
-              cwd: '<%%= config.app %>',
-              dest: '<%%= config.dist %>',
-              src: [
-                '*.{ico,png,txt}',
-                '.htaccess',
-                '{,*/}*.html',
-              ]
-            }]
-          },
+            files: [
+              {
+                expand: true,
+                dot: true,
+                cwd: '<%= config.app %>',
+                dest: '<%= config.dist %>',
+                src: [
+                  '.htaccess',
+                  '{,*/}*.php',
+                ]
+              },
+              {
+                expand: true,
+                dot: true,
+                cwd: '<%= config.app %>/css',
+                dest: '<%= config.dist %>/css',
+                src: '{,*/}*.css'
+              },
+              {
+                expand: true,
+                dot: true,
+                cwd: '<%= config.app %>/fonts',
+                dest: '<%= config.dist %>/fonts',
+                src: '**'
+              },
+              {
+                expand: true,
+                dot: true,
+                cwd: '<%= config.app %>/images',
+                dest: '<%= config.dist %>/images',
+                src: '**'
+              },
+              {
+                expand: true,
+                dot: true,
+                cwd: '<%= config.app %>/js',
+                dest: '<%= config.dist %>/js',
+                src: '{,*/}*.js',
+              }
+            ]
+          }
+        },
+        /*--
+          End of copy method
+          Remove this when you update the files correctly
+        --*/
 
-          styles: {
-            expand: true,
-            dot: true,
-            cwd: '<%%= config.app %>/css',
-            dest: '.tmp/css/',
-            src: '{,*/}*.css'
+        uglify: {
+          scripts: {
+            files: {
+              '<%= config.dist %>/js/plugins.min.js': ['<%= config.dist %>/js/plugins.js']
+            }
           }
         }
 
@@ -186,15 +240,14 @@ module.exports = function(grunt) {
 
     grunt.registerTask('build', [
         'clean:dist',
-        'wiredep',
+        'bowercopy',
+        'copy:dist',
+        'imagemin',
         'useminPrepare',
         'concat',
-        'cssmin',
-        'imagemin',
-        'uglify',
-        'copy:dist',
-        'rev',
-        'usemin'
+        'usemin',
+        'uglify:scripts',
+        'clean:postBuild'
     ]);
  
 };
