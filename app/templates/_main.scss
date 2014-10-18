@@ -5,13 +5,8 @@ Imports
 @import "compass/reset";
 @import "compass/utilities/general/clearfix";
 @import "customMixins";
+@import "vars";
 
-/*--
-Variables
---*/
-$center: 0 auto;
-$standardFontSize: 24px;
-$fontColor: #2C78AD;
 
 /*--
 Tags
