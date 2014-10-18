@@ -75,14 +75,14 @@ module.exports = function(grunt) {
 
         useminPrepare: {
           options: {
-            dest: '<%= config.dist %>/index.php'
+            dest: '<%= config.dist %>/index.html'
           },
-          html: '<%= config.dist %>/index.php'
+          html: '<%= config.dist %>/index.html'
         },
 
         // Performs rewrites based on rev and the useminPrepare configuration
         usemin: {
-          html: ['<%= config.dist %>/{,*/}*.php']
+          html: ['<%= config.dist %>/{,*/}*.html']
         },
 
         // Make sure code styles are up to par and there are no obvious mistakes
@@ -97,18 +97,34 @@ module.exports = function(grunt) {
           ]
         },
 
+        /*-- 
+          Files to concat
+          This needs to be updated based on the project preferences
+        --*/
+
         concat: {
           options: {
             separator: ';',
           },
+
           //All the plugins needs to be configured here
           dist: {
             src: [
-              '<%= config.dist %>/js/vendor/jquery.js'
+              //Example
+              '<%= config.dist %>/js/vendor/jquery.js', 
+              //'<%= config.dist %>/js/vendor/jquery.flexslider.js',
+              //'<%= config.dist %>/js/vendor/customForms.js',
+              //'<%= config.dist %>/js/vendor/spritespin.js'
             ],
             dest: '<%= config.dist %>/js/plugins.js',
           },
         },
+
+
+        /*--
+          End of concat method
+          Remove this when you update the files correctly
+        --*/
 
         // Optimize images
         imagemin: {
@@ -122,6 +138,11 @@ module.exports = function(grunt) {
             }
         },
 
+
+        /*--
+          Files that needs to be moved from bower_components folder
+          This needs to be updated based on the project preferences
+        --*/
         bowercopy: {
             options: {
                 srcPrefix: '<%= config.app %>/bower_components'
@@ -131,8 +152,9 @@ module.exports = function(grunt) {
                     destPrefix: '<%= config.dist %>/js/'
                 },
                 files: {
-                     'vendor/jquery.js': 'jquery/jquery.js',
-                     'vendor/jquery.flexslider.js': 'flexslider/jquery.flexslider.js',
+                     //Example
+                     // 'vendor/jquery.js': 'jquery/jquery.js',
+                     // 'vendor/jquery.flexslider.js': 'flexslider/jquery.flexslider.js'
                 }
             },
             styles: {
@@ -140,11 +162,21 @@ module.exports = function(grunt) {
                     destPrefix: '<%= config.dist %>/css/'
                 },
                 files: {
-                    'vendor/flexslider.css': 'flexslider/flexslider.css',
+                    //Example
+                    //'vendor/flexslider.css': 'flexslider/flexslider.css',
                 }
             }
         },
+        /*--
+          End of Bower copy method
+          Remove this when you update the files correctly
+        --*/
 
+        
+        /*--
+          Files to copy on build, add here any file specific to your project
+          This needs to be updated based on the project preferences
+        --*/
         copy: {
           dist: {
             files: [
@@ -155,7 +187,7 @@ module.exports = function(grunt) {
                 dest: '<%= config.dist %>',
                 src: [
                   '.htaccess',
-                  '{,*/}*.php',
+                  '{,*/}*.html',
                 ]
               },
               {
@@ -185,18 +217,15 @@ module.exports = function(grunt) {
                 cwd: '<%= config.app %>/js',
                 dest: '<%= config.dist %>/js',
                 src: '{,*/}*.js',
-              },
-              {
-                expand: true,
-                dot: true,
-                cwd: '<%= config.app %>/json',
-                dest: '<%= config.dist %>/json',
-                src: '{,*/}*.json',
               }
             ]
           }
         },
 
+        /*--
+          End of copy method
+          Remove this when you update the files correctly
+        --*/
         uglify: {
           scripts: {
             files: {

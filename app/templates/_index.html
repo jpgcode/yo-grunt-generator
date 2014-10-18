@@ -1,9 +1,10 @@
 <!doctype html>
-<html class="no-js">
+<!--[if IE 8]><html class="ie8" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
 <head>
 	<meta charset="UTF-8">
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=0, width=device-width, height=device-height"/>
 	
 	<title><%= appname %></title>
 
@@ -26,10 +27,8 @@
 	</div>
 
 
-	<!-- build:js js/vendor.js -->
-    <!-- bower:js -->
-    <script src="bower_components/jquery/dist/jquery.js"></script>
-    <!-- endbower -->
+	<!-- build:js js/plugins.min.js -->
+    <script type="text/javascript" src="bower_components/jquery/jquery.js"></script>
     <!-- endbuild -->
 
     <!-- build:js js/scripts.js -->
