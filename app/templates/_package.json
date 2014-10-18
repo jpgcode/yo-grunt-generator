@@ -1,5 +1,10 @@
 {
   "name": "appname",
+  "description": "App description",
+  "repository" : { 
+    "type" : "git",
+    "url" : "https://github.com/jpgcode/yeomanGenerator.git"
+  },
   "version": "0.0.0",
   "devDependencies": {
     "grunt": "~0.4.5",

@@ -46,8 +46,8 @@ var JpgcodeGenerator = yeoman.generators.Base.extend({
     this.mkdir('app/fonts');
 
     this.copy('_package.json', 'package.json');
-    this.copy('_bower.json', 'bower.json');
-    this.copy('.bowerrc', '.bowerrc');
+    this.copy('_bower.json', 'app/bower.json');
+    this.copy('.bowerrc', '.app/bowerrc');
     this.copy('.gitignore', '.gitignore');
   },
 
@@ -60,6 +60,7 @@ var JpgcodeGenerator = yeoman.generators.Base.extend({
     this.copy('_customMixins.scss', 'app/sass/_customMixins.scss');
     this.copy('_config.rb', 'config.rb');
     this.copy('_gruntfile.js', 'Gruntfile.js');
+    this.copy('_README.md', 'README.md');
 
     var context = { 
         appname: this.appName 
