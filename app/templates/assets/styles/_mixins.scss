@@ -1,0 +1,46 @@
+/*--
+ Mixins
+--*/
+
+//Breakpoints RWD mixin
+@mixin respond-to($breakpoint) {
+    @media only screen and (min-width: $breakpoint) { @content; }
+}
+
+// Mixin for Rem Sizing
+@mixin rem($property,$sizeValue: 1.6) {
+    #{$property} : ($sizeValue * 10) + px;
+    #{$property} : $sizeValue + rem;
+}
+
+//Bourbon Size Mixin
+@mixin size($size) {
+    $height: nth($size, 1);
+    $width: $height;
+    @if length($size) > 1 { $height: nth($size, 2); }
+    @if $height == auto or (type-of($height) == number and not unitless($height)) { height: $height;}
+    @if $width == auto or (type-of($width) == number and not unitless($width)) { width: $width; }
+}
+
+//Bourbon Position Mixin
+@mixin position ($position: relative, $coordinates: null null null null) {
+    @if type-of($position) == list {$coordinates: $position; $position: relative; }
+    $coordinates: unpack($coordinates);
+    $top: nth($coordinates, 1);
+    $right: nth($coordinates, 2);
+    $bottom: nth($coordinates, 3);
+    $left: nth($coordinates, 4);
+    position: $position;
+    @if ($top and $top == auto) or (type-of($top) == number) { top: $top; }
+    @if ($right and $right == auto) or (type-of($right) == number) { right: $right; }
+    @if ($bottom and $bottom == auto) or (type-of($bottom) == number) { bottom: $bottom; }
+    @if ($left and $left == auto) or (type-of($left) == number) { left: $left; }
+}
+
+//Adds opacity values for IE 
+@mixin opacity($value){
+    $ie-value: $value * 100;
+    opacity: $value;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity="+$ie-value+")";
+    filter: alpha(opacity=$ie-value);
+}

@@ -9,7 +9,7 @@
 	<title><%= appname %></title>
 
 	<link rel="shortcut icon" href="/favicon.ico">
-
+	
 	<!-- build:css css/vendor.css -->
     <!-- bower:css -->
     <!-- endbower -->
@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="assets/styles/main.css" />
     <!-- endbuild -->
 
+	<script src="bower_components/modernizr/modernizr.js"></script>
+	
 </head>
 <body>
 
@@ -26,11 +28,10 @@
 		<h1>Congrats! Your <%= appname %> project is ready</h1>
 	</div>
 
-	<!-- build:js js/plugins.min.js -->
-    <script type="text/javascript" src="bower_components/jquery/jquery.js"></script>
-    <!-- endbuild -->
-
-    <!-- build:js js/scripts.js -->
+	<!-- build:js assets/scripts/main.js -->
+    <!-- bower:js -->
+	<!-- endbower -->
+    <script src="assets/scripts/util.js"></script>
 	<script src="assets/scripts/main.js"></script>
 	<!-- endbuild -->
 </body>

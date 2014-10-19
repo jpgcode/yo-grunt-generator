@@ -48,6 +48,7 @@ module.exports = function (grunt) {
             }
         },
 
+        <% if (projectType == "HTML") { %>
         //Run http server and open browser
         connect: {
             server: {
@@ -58,6 +59,19 @@ module.exports = function (grunt) {
                     livereload: 35729,
                     hostname: '0.0.0.0'
                 }
+            }
+        },
+        <% } %>
+
+        wiredep: {
+            app: {
+                src: [
+                    <% if (projectType == "HTML") { %>
+                    '<%%= pkg.app %>/index.html'
+                    <% } else{ %>
+                    '<%%= pkg.app %>/index.php'
+                    <% } %>
+                ]
             }
         },
 
@@ -109,11 +123,11 @@ module.exports = function (grunt) {
             ]
         },
 
+
         /*-- 
           Files to concat
           This needs to be updated based on the project preferences
         --*/
-
         concat: {
             options: {
                 separator: ';',
@@ -123,16 +137,12 @@ module.exports = function (grunt) {
             dist: {
                 src: [
                     //Example
-                    '<%%= pkg.dist %>/js/vendor/jquery.js', 
+                    '<%%= pkg.dist %>/assets/scripts/vendor/jquery.js', 
                     //'<%%= config.dist %>/js/vendor/jquery.flexslider.js',
-                    //'<%%= config.dist %>/js/vendor/customForms.js',
-                    //'<%%= config.dist %>/js/vendor/spritespin.js'
                 ],
-                dest: '<%%= pkg.dist %>/js/plugins.js',
+                dest: '<%%= pkg.dist %>/assets/scripts/plugins.js',
             },
         },
-
-
         /*--
           End of concat method
           Remove this when you update the files correctly
@@ -144,7 +154,7 @@ module.exports = function (grunt) {
         --*/
         bowercopy: {
             options: {
-                srcPrefix: '<%%= pkg.app %>/bower_components'
+                srcPrefix: '<%%= pkg.app %>/bower_components/'
             },
             scripts: {
                 options: {
@@ -152,10 +162,12 @@ module.exports = function (grunt) {
                 },
                 files: {
                      //Example
-                     // 'vendor/jquery.js': 'jquery/jquery.js',
-                     // 'vendor/jquery.flexslider.js': 'flexslider/jquery.flexslider.js'
+                     'vendor/jquery.js': 'jquery/jquery.js',
+                     'vendor/modernizr.js': 'modernizr/modernizr.js'
                 }
-            },
+            }
+            /*,
+            Use this in case there is some css thats needs to be moved from bower_components folder
             styles: {
                 options: {
                     destPrefix: '<%%= pkg.dist %>/assets/styles'
@@ -164,7 +176,7 @@ module.exports = function (grunt) {
                     //Example
                     //'vendor/flexslider.css': 'flexslider/flexslider.css',
                 }
-            }
+            }*/
         },
         /*--
           End of Bower copy method
@@ -220,7 +232,6 @@ module.exports = function (grunt) {
                 ]
             }
         },
-
         /*--
           End of copy method
           Remove this when you update the files correctly
@@ -248,13 +259,7 @@ module.exports = function (grunt) {
 
         concurrent: {
             dist: [
-                'bowercopy',
-                'copy:dist',
-                'imagemin',
-                'useminPrepare',
-                'concat',
-                'usemin',
-                'uglify:scripts',
+                
             ]
         },
 
@@ -279,14 +284,23 @@ module.exports = function (grunt) {
     --*/
 
     grunt.registerTask('default',[
+        <% if (projectType == "HTML") { %>
         'connect:server', 
         'notify:server',
+        <% } %>
         'jshint',
         'watch'
     ]);
 
     grunt.registerTask('build', [
         'clean:dist',
+        'bowercopy',
+        'copy:dist',
+        'imagemin',
+        'useminPrepare',
+        'concat',
+        'usemin',
+        'uglify:scripts',
         'concurrent:dist',
         'clean:postBuild'
     ]);
