@@ -259,7 +259,13 @@ module.exports = function (grunt) {
 
         concurrent: {
             dist: [
-                
+                'bowercopy',
+                'copy:dist',
+                'imagemin',
+                'useminPrepare',
+                'concat',
+                'usemin',
+                'uglify:scripts'
             ]
         },
 
@@ -294,13 +300,6 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
         'clean:dist',
-        'bowercopy',
-        'copy:dist',
-        'imagemin',
-        'useminPrepare',
-        'concat',
-        'usemin',
-        'uglify:scripts',
         'concurrent:dist',
         'clean:postBuild'
     ]);
