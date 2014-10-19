@@ -26,12 +26,17 @@ var JpgcodeGenerator = yeoman.generators.Base.extend({
     var prompts = [
       {
         name: 'appName',
-        message: 'What is your app\'s name?'}
+        message: 'What is your app\'s name?'
+      },
+      {
+        name: 'projectType',
+        message: 'Do you want to enable the HTTP server?'
+      }
     ];
 
     this.prompt(prompts, function (props) {
       this.appName = props.appName;
-      this.addDemoSection = props.addDemoSection;
+      this.projectType = props.projectType;
 
       done();
     }.bind(this));
@@ -46,8 +51,8 @@ var JpgcodeGenerator = yeoman.generators.Base.extend({
     this.mkdir('app/fonts');
 
     this.copy('_package.json', 'package.json');
-    this.copy('_bower.json', 'app/bower.json');
-    this.copy('.bowerrc', '.app/bowerrc');
+    this.copy('_bower.json', 'bower.json');
+    this.copy('.bowerrc', '.bowerrc');
     this.copy('.gitignore', '.gitignore');
   },
 
@@ -63,7 +68,8 @@ var JpgcodeGenerator = yeoman.generators.Base.extend({
     this.copy('_README.md', 'README.md');
 
     var context = { 
-        appname: this.appName 
+        appname: this.appName,
+        projectType: this.projectType
     };
 
     this.template("_index.html", "app/index.html", context);

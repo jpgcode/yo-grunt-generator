@@ -1,3 +1,5 @@
+// Generated using generator-jpgWebApp
+
 'use strict';
 
 module.exports = function(grunt) {
@@ -5,38 +7,31 @@ module.exports = function(grunt) {
     // Load grunt tasks automatically
     require('load-grunt-tasks')(grunt);
 
-    // Configurable paths
-    var config = {
-        app: 'app',
-        dist: 'build'
-    };
-
-
     /*--
      Define the configuration for all the tasks
     --*/
     grunt.initConfig({
 
-        //Project settings
-        config: config,
+        // contains some project configuration properties
+        pkg: require('./package.json'),
 
         // Compile Sass files
         compass: {
             dist: {
-              options: {
-                config: 'config.rb'
-              }
+                options: {
+                    config: 'config.rb'
+                }
             }
         },
 
         // Watch files and trigger tasks
         watch: {
             sass: {
-                files: ['<%= config.app %>/sass/**/*.scss'],
+                files: ['<%= pkg.app %>/sass/**/*.scss'],
                 tasks: ['compass'],
             },
             html: {
-                files: ['<%= config.app %>/index.php'],
+                files: ['<%= pkg.app %>/index.html'],
                 tasks: ['copy:dist', 'useminPrepare:html', 'usemin:html'],
             },
             livereload: {
@@ -44,57 +39,70 @@ module.exports = function(grunt) {
                     livereload: true
                 },
                 files: [
-                    '<%= config.app %>/*.html', '<%= config.app %>/css/*.css'
+                    '<%= pkg.app %>/*.html', '<%= pkg.app %>/css/*.css'
                 ]
             }
         },
 
-        // Empties folders to start fresh
+        //Run http server and open browser
+        connect: {
+            server: {
+                options: {
+                    base: 'app',
+                    open: true,
+                    port: 9000,
+                    livereload: 35729,
+                    hostname: '0.0.0.0'
+                }
+            }
+        },
+
+        //Clean folders
         clean: {
-          dist: {
-            files: [{
-              dot: true,
-              src: [
-                '.tmp',
-                '<%= config.dist %>/*',
-                '!<%= config.dist %>/.git*'
-              ]
-            }]
-          },
-          postBuild: {
-            files: [{
-              dot: true,
-              src: [
-                '<%= config.dist %>/js/vendor',
-                '<%= config.dist %>/js/plugins.js',
-              ]
-            }]
-          },
-          server: '.tmp'
+            dist: {
+                files: [{
+                    dot: true,
+                    src: [
+                        '.tmp',
+                        '<%= pkg.dist %>/*',
+                        '!<%= pkg.dist %>/.git*'
+                    ]
+                }]
+            },
+            postBuild: {
+                files: [{
+                    dot: true,
+                    src: [
+                        '<%= pkg.dist %>/js/vendor',
+                        '<%= pkg.dist %>/js/plugins.js',
+                    ]
+                }]
+            },
+            server: '.tmp'
         },
 
         useminPrepare: {
-          options: {
-            dest: '<%= config.dist %>/index.html'
-          },
-          html: '<%= config.dist %>/index.html'
+            options: {
+                dest: '<%= pkg.dist %>/index.html'
+            },
+            html: '<%= pkg.dist %>/index.html'
         },
 
         // Performs rewrites based on rev and the useminPrepare configuration
         usemin: {
-          html: ['<%= config.dist %>/{,*/}*.html']
+            html: ['<%= pkg.dist %>/{,*/}*.html']
         },
 
         // Make sure code styles are up to par and there are no obvious mistakes
         jshint: {
-          options: {
-            jshintrc: '.jshintrc',
-            reporter: require('jshint-stylish')
-          },
-          all: [
-            'Gruntfile.js',
-            '/js/{,*/}*.js'
-          ]
+            options: {
+                jshintrc: '.jshintrc',
+                reporter: require('jshint-stylish')
+            },
+            all: [
+                'Gruntfile.js',
+                '/js/{,*/}*.js'
+            ]
         },
 
         /*-- 
@@ -103,21 +111,21 @@ module.exports = function(grunt) {
         --*/
 
         concat: {
-          options: {
-            separator: ';',
-          },
+            options: {
+                separator: ';',
+            },
 
-          //All the plugins needs to be configured here
-          dist: {
-            src: [
-              //Example
-              '<%= config.dist %>/js/vendor/jquery.js', 
-              //'<%= config.dist %>/js/vendor/jquery.flexslider.js',
-              //'<%= config.dist %>/js/vendor/customForms.js',
-              //'<%= config.dist %>/js/vendor/spritespin.js'
-            ],
-            dest: '<%= config.dist %>/js/plugins.js',
-          },
+            //All the plugins needs to be configured here
+            dist: {
+                src: [
+                    //Example
+                    '<%= pkg.dist %>/js/vendor/jquery.js', 
+                    //'<%= config.dist %>/js/vendor/jquery.flexslider.js',
+                    //'<%= config.dist %>/js/vendor/customForms.js',
+                    //'<%= config.dist %>/js/vendor/spritespin.js'
+                ],
+                dest: '<%= pkg.dist %>/js/plugins.js',
+            },
         },
 
 
@@ -126,30 +134,17 @@ module.exports = function(grunt) {
           Remove this when you update the files correctly
         --*/
 
-        // Optimize images
-        imagemin: {
-            dynamic: {
-                files: [{
-                    expand: true,
-                    cwd: '<%= config.dist %>/images/',
-                    src: ['**/*.{png,jpg,gif}'],
-                    dest: '<%= config.dist %>/images/'
-                }]
-            }
-        },
-
-
         /*--
           Files that needs to be moved from bower_components folder
           This needs to be updated based on the project preferences
         --*/
         bowercopy: {
             options: {
-                srcPrefix: '<%= config.app %>/bower_components'
+                srcPrefix: '<%= pkg.app %>/bower_components'
             },
             scripts: {
                 options: {
-                    destPrefix: '<%= config.dist %>/js/'
+                    destPrefix: '<%= pkg.dist %>/js/'
                 },
                 files: {
                      //Example
@@ -159,7 +154,7 @@ module.exports = function(grunt) {
             },
             styles: {
                 options: {
-                    destPrefix: '<%= config.dist %>/css/'
+                    destPrefix: '<%= pkg.dist %>/css/'
                 },
                 files: {
                     //Example
@@ -178,60 +173,103 @@ module.exports = function(grunt) {
           This needs to be updated based on the project preferences
         --*/
         copy: {
-          dist: {
-            files: [
-              {
-                expand: true,
-                dot: true,
-                cwd: '<%= config.app %>',
-                dest: '<%= config.dist %>',
-                src: [
-                  '.htaccess',
-                  '{,*/}*.html',
+            dist: {
+                files: [
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= pkg.app %>',
+                        dest: '<%= pkg.dist %>',
+                        src: [
+                            '.htaccess',
+                            '{,*/}*.html',
+                        ]
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= pkg.app %>/css',
+                        dest: '<%= pkg.dist %>/css',
+                        src: '{,*/}*.css'
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= pkg.app %>/fonts',
+                        dest: '<%= pkg.dist %>/fonts',
+                        src: '**'
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= pkg.app %>/images',
+                        dest: '<%= pkg.dist %>/images',
+                        src: '**'
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= pkg.app %>/js',
+                        dest: '<%= pkg.dist %>/js',
+                        src: '{,*/}*.js',
+                    }
                 ]
-              },
-              {
-                expand: true,
-                dot: true,
-                cwd: '<%= config.app %>/css',
-                dest: '<%= config.dist %>/css',
-                src: '{,*/}*.css'
-              },
-              {
-                expand: true,
-                dot: true,
-                cwd: '<%= config.app %>/fonts',
-                dest: '<%= config.dist %>/fonts',
-                src: '**'
-              },
-              {
-                expand: true,
-                dot: true,
-                cwd: '<%= config.app %>/images',
-                dest: '<%= config.dist %>/images',
-                src: '**'
-              },
-              {
-                expand: true,
-                dot: true,
-                cwd: '<%= config.app %>/js',
-                dest: '<%= config.dist %>/js',
-                src: '{,*/}*.js',
-              }
-            ]
-          }
+            }
         },
 
         /*--
           End of copy method
           Remove this when you update the files correctly
         --*/
-        uglify: {
-          scripts: {
-            files: {
-              '<%= config.dist %>/js/plugins.min.js': ['<%= config.dist %>/js/plugins.js']
+
+        // Optimize images
+        imagemin: {
+            dynamic: {
+                files: [{
+                    expand: true,
+                    cwd: '<%= pkg.dist %>/images/',
+                    src: ['**/*.{png,jpg,gif}'],
+                    dest: '<%= pkg.dist %>/images/'
+                }]
             }
-          }
+        },
+
+        uglify: {
+            scripts: {
+                files: {
+                    '<%= pkg.dist %>/js/plugins.min.js': ['<%= pkg.dist %>/js/plugins.js']
+                }
+            }
+        },
+
+        concurrent: {
+            dist: [
+                'bowercopy',
+                'copy:dist',
+                'imagemin',
+                'useminPrepare',
+                'concat',
+                'usemin',
+                'uglify:scripts',
+            ]
+        },
+
+        notify: {
+            server: {
+                options: {
+                    message: 'Server up and running!'
+                }
+            },
+            build: {
+                options: {
+                    message: 'Build completed!'
+                }
+            },
+            watch: {
+                options: {
+                    message: 'Changes reloaded!'
+                }
+            }
         }
 
     });
@@ -241,19 +279,16 @@ module.exports = function(grunt) {
      Define Grunt tasks
     --*/
 
-    grunt.registerTask('default', ['watch']);
-
-    grunt.registerTask('hint', ['jshint']);
+    grunt.registerTask('default',[
+        'connect:server', 
+        'notify:server',
+        'jshint',
+        'watch'
+    ]);
 
     grunt.registerTask('build', [
         'clean:dist',
-        'bowercopy',
-        'copy:dist',
-        'imagemin',
-        'useminPrepare',
-        'concat',
-        'usemin',
-        'uglify:scripts',
+        'concurrent:dist',
         'clean:postBuild'
     ]);
 
