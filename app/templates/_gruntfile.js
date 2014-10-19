@@ -162,8 +162,8 @@ module.exports = function (grunt) {
                 },
                 files: {
                      //Example
-                     'vendor/jquery.js': 'jquery/jquery.js',
-                     'vendor/modernizr.js': 'modernizr/modernizr.js'
+                    'vendor/jquery.js': 'jquery/jquery.js',
+                    'vendor/modernizr.js': 'modernizr/modernizr.js'
                 }
             }
             /*,

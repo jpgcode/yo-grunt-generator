@@ -40,12 +40,19 @@ var JpgcodeGenerator = yeoman.generators.Base.extend({
                 name: 'projectType',
                 message: 'Your project will be html or PHP?',
                 choices: ['HTML', 'PHP']
+            },
+            {
+                type: 'list',
+                name: 'jQueryVersion',
+                message: 'Which version of jQuery do you need?',
+                choices: ['IE browsers support (1.9.1)', 'I want the latest version (2.1.1)']
             }
         ];
 
         this.prompt(prompts, function (props) {
             this.appName = props.appName;
             this.projectType = props.projectType;
+            this.jQueryVersion = props.jQueryVersion;
 
             done();
         }.bind(this));
@@ -82,7 +89,7 @@ var JpgcodeGenerator = yeoman.generators.Base.extend({
     },
 
     app: function () {
-        this.copy('_bower.json', 'bower.json');
+        this.template('_bower.json', 'bower.json');
         this.template('_package.json', 'package.json');
         this.template('_gruntfile.js', 'Gruntfile.js');
         

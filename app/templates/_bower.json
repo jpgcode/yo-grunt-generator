@@ -2,7 +2,11 @@
   "name": "package",
   "version": "0.0.0",
   "dependencies": {
+  	<% if (jQueryVersion == "IE browsers support (1.9.1)") { %>
   	"jquery": "1.9.1",
+  	<% }else{ %>
+  	"jquery": "2.1.1",
+  	<% } %>
   	"modernizr": "~2.8.3"
   },
   "devDependencies": {
