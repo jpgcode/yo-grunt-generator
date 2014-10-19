@@ -35,7 +35,7 @@ module.exports = function (grunt) {
                 tasks: ['compass'],
             },
             html: {
-                files: ['<%%= pkg.app %>/index.html'],
+                files: ['<%%= pkg.app %>/index.php'],
                 tasks: ['copy:dist', 'useminPrepare:html', 'usemin:html'],
             },
             livereload: {
@@ -43,21 +43,8 @@ module.exports = function (grunt) {
                     livereload: true
                 },
                 files: [
-                    '<%%= pkg.app %>/*.html', '<%%= pkg.app %>/assets/styles/*.css'
+                    '<%%= pkg.app %>/*.php', '<%%= pkg.app %>/assets/styles/*.css'
                 ]
-            }
-        },
-
-        //Run http server and open browser
-        connect: {
-            server: {
-                options: {
-                    base: 'app',
-                    open: true,
-                    port: 9000,
-                    livereload: 35729,
-                    hostname: '0.0.0.0'
-                }
             }
         },
 
@@ -87,14 +74,14 @@ module.exports = function (grunt) {
 
         useminPrepare: {
             options: {
-                dest: '<%%= pkg.dist %>/index.html'
+                dest: '<%%= pkg.dist %>/index.php'
             },
-            html: '<%%= pkg.dist %>/index.html'
+            html: '<%%= pkg.dist %>/index.php'
         },
 
         // Performs rewrites based on rev and the useminPrepare configuration
         usemin: {
-            html: ['<%%= pkg.dist %>/{,*/}*.html']
+            html: ['<%%= pkg.dist %>/{,*/}*.php']
         },
 
         // Make sure code styles are up to par and there are no obvious mistakes
@@ -279,8 +266,6 @@ module.exports = function (grunt) {
     --*/
 
     grunt.registerTask('default',[
-        'connect:server', 
-        'notify:server',
         'jshint',
         'watch'
     ]);

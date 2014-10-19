@@ -7,73 +7,91 @@ var chalk = require('chalk');
 
 
 var JpgcodeGenerator = yeoman.generators.Base.extend({
-  init: function () {
-    this.pkg = require('../package.json');
+    init: function () {
+        this.pkg = require('../package.json');
 
-    this.on('end', function () {
-      if (!this.options['skip-install']) {
-        this.installDependencies();
-      }
-    });
-  },
+        this.on('end', function () {
+            if (!this.options['skip-install']) {
+                this.installDependencies();
+            }
+        });
+    },
 
-  askFor: function () {
-    var done = this.async();
+    askFor: function () {
+        var done = this.async();
 
-    // Have Yeoman greet the user.
-    this.log(yosay('Welcome to the LEGEND... wait for it... Jpgcode generator... DARY!'));
+        // have Yeoman greet the user
+        this.log(this.yeoman);
 
-    var prompts = [
-      {
-        name: 'appName',
-        message: 'What is your app\'s name?'
-      },
-      {
-        name: 'projectType',
-        message: 'Do you want to enable the HTTP server?'
-      }
-    ];
+        // Have Yeoman greet the user.
+        this.log(chalk.magenta('Welcome to the LEGEND... wait for it... Jpgcode generator... DARY!'));
 
-    this.prompt(prompts, function (props) {
-      this.appName = props.appName;
-      this.projectType = props.projectType;
+        var prompts = [
+            {
+                name: 'appName',
+                message: 'What is your app\'s name?'
+            },
+            {
+                name: 'addServer',
+                message: 'Do you want to enable the HTTP server?',
+                default: 'Y/n',
+            }
+        ];
 
-      done();
-    }.bind(this));
-  },
+        this.prompt(prompts, function (props) {
+            this.appName = props.appName;
+            this.addServer = props.addServer;
 
-  app: function () {
-    this.mkdir('app');
-    this.mkdir('app/css');
-    this.mkdir('app/sass');
-    this.mkdir('app/js');
-    this.mkdir('app/images');
-    this.mkdir('app/fonts');
+            done();
+        }.bind(this));
+    },
 
-    this.copy('_package.json', 'package.json');
-    this.copy('_bower.json', 'bower.json');
-    this.copy('.bowerrc', '.bowerrc');
-    this.copy('.gitignore', '.gitignore');
-  },
+    createFolders: function(){
+        this.mkdir('app');
+        this.mkdir('app/assets/js');
+        this.mkdir('app/assets/styles');
+        this.mkdir('app/assets/images');
+        this.mkdir('app/assets/fonts');
+    },
 
-  projectfiles: function () {
-    this.copy('_editorconfig', '.editorconfig');
-    this.copy('_jshintrc', '.jshintrc');
-    this.copy('_main.scss', 'app/sass/main.scss');
-    this.copy('_main.css', 'app/css/main.css');
-    this.copy('_scripts.js', 'app/js/scripts.js');
-    this.copy('_customMixins.scss', 'app/sass/_customMixins.scss');
-    this.copy('_config.rb', 'config.rb');
-    this.copy('_gruntfile.js', 'Gruntfile.js');
-    this.copy('_README.md', 'README.md');
+    copyStyles: function(){
+        this.copy('assets/styles/main.scss', 'app/assets/styles/main.scss');
+        this.copy('assets/styles/_main.css', 'app/assets/styles/main.css');
+        this.copy('assets/styles/_customMixins.scss', 'app/assets/styles/_customMixins.scss');
+        this.copy('assets/styles/_vars.scss', 'app/assets/styles/_vars.scss');
+    },
 
-    var context = { 
-        appname: this.appName,
-        projectType: this.projectType
-    };
+    copyScripts: function(){
+        this.copy('assets/scripts/main.js', 'app/assets/scripts/main.js');
+    },
 
-    this.template("_index.html", "app/index.html", context);
-  }
+    copyPages: function(){
+        var context = { appname: this.appName };
+        if (this.addServer == "n") {
+            this.template("_index.html", "app/index.php", context);
+        }else{
+            this.template("_index.html", "app/index.html", context);
+        }
+    },
+
+    app: function () {
+        this.copy('_bower.json', 'bower.json');
+        this.template('_package.json', 'package.json');
+        if (this.addServer == "n") {
+            this.template('_gruntfile-php.js', 'Gruntfile.js');
+        }else{
+            this.template('_gruntfile.js', 'Gruntfile.js');
+        }
+
+        
+        this.copy('config.rb', 'config.rb');
+        this.copy('README.md', 'README.md');
+
+        this.copy('.editorconfig', '.editorconfig');
+        this.copy('.jshintrc', '.jshintrc');  
+        this.copy('.bowerrc', '.bowerrc');
+        this.copy('.gitignore', '.gitignore');
+    }
 });
 
 module.exports = JpgcodeGenerator;
